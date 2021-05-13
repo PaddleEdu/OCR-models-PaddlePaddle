@@ -1,0 +1,4 @@
+opencv-python==4.1.1.26
+scikit-image==0.18.1
+scipy==1.6.2
+Polygon3
