@@ -1,0 +1,5 @@
+mmcv
+paddlepaddle-gpu==2.0.1
+Polygon3
+pyclipper
+
