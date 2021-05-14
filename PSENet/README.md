@@ -9,7 +9,7 @@
 - [https://github.com/whai362/PSENet](https://github.com/whai362/PSENet)
 
 项目aistudio地址：
-- [整理后推出](整理后退出)
+- 所有环境均已配置好，只需要根据notebook提示运行:[https://aistudio.baidu.com/aistudio/projectdetail/1945560](https://aistudio.baidu.com/aistudio/projectdetail/1945560)
 
 # 对比
 本项目基于paddlepaddle深度学习框架复现，对比于作者论文的代码：
