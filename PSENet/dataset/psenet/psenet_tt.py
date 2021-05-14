@@ -1,10 +1,7 @@
 import numpy as np
 from PIL import Image
-# from torch.utils import data
 import cv2
 import random
-# import torchvision.transforms as transforms
-# import torch
 import paddle
 from paddle.io import Dataset
 import paddle.vision.transforms as transforms
@@ -14,7 +11,6 @@ import math
 import string
 import scipy.io as scio
 import mmcv
-# from mmcv.parallel import DataContainer as DC
 
 tt_root_dir = './data/total_text/'
 tt_train_data_dir = tt_root_dir + 'Images/Train/'
@@ -57,7 +53,6 @@ def get_ann(img, gt_path):
             word = '???'
         else:
             word = word[0]
-            # word = word[0].encode("utf-8")
 
         if word == '#':
             word = '###'
@@ -179,7 +174,6 @@ def update_word_mask(instance, instance_before_crop, word_mask):
             word_mask[label] = 0
             continue
         ind_before_crop = instance_before_crop == label
-        # print(np.sum(ind), np.sum(ind_before_crop))
         if float(np.sum(ind)) / np.sum(ind_before_crop) > 0.9:
             continue
         word_mask[label] = 0
@@ -376,12 +370,6 @@ class PSENET_TT(Dataset):
         gt_kernels = paddle.to_tensor(gt_kernels, dtype="int64")
         training_mask = paddle.to_tensor(training_mask, dtype="int64")
 
-        # data = dict(
-        #     imgs=img,
-        #     gt_texts=gt_text,
-        #     gt_kernels=gt_kernels,
-        #     training_masks=training_mask,
-        # )
         return img.numpy(), gt_text.numpy(), gt_kernels.numpy(), training_mask.numpy()
 
     def prepare_test_data(self, index):
@@ -402,10 +390,6 @@ class PSENET_TT(Dataset):
         img = transforms.ToTensor()(img)
         img = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])(img)
 
-        # data = dict(
-        #     imgs=img,
-        #     img_metas=img_meta
-        # )
 
         return img.numpy(), img_meta["img_size"],img_meta["org_img_size"]
 

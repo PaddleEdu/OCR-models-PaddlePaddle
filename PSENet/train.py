@@ -66,9 +66,6 @@ def train(train_loader, model, optimizer, epoch, start_iter, cfg):
 
         # forward
         outputs = model(**data_dict)
-        #
-        # print(outputs['loss_text'].shape)
-        # print(outputs['loss_kernels'].shape)
 
         # detection loss
         loss_text = paddle.mean(outputs['loss_text'])
@@ -95,7 +92,6 @@ def train(train_loader, model, optimizer, epoch, start_iter, cfg):
         # update start time
         start = time.time()
 
-        # print log
         
         if iter % 20 == 0:
             output_log = '({batch}/{size}) LR: {lr:.6f} | Batch: {bt:.3f}s | Total: {total:.0f}min | ' \
@@ -134,8 +130,6 @@ def adjust_learning_rate(optimizer, dataloader, epoch, iter, cfg):
             lr = lr * 0.1
 
     optimizer.set_lr(lr)
-    #for param_group in optimizer.param_groups:
-    #    param_group['lr'] = lr
 
 
 def save_checkpoint(state, checkpoint_path, cfg):
@@ -143,12 +137,6 @@ def save_checkpoint(state, checkpoint_path, cfg):
     opt_path = osp.join(checkpoint_path, 'checkpoint_{}_{}.pdopt'.format(state["epoch"],state["iter"]))
     paddle.save(state["state_dict"], param_path)
     paddle.save(state["optimizer"], opt_path)
-
-    # if cfg.data.train.type in ['synth'] or \
-    #         (state['iter'] == 0 and state['epoch'] > cfg.train_cfg.epoch - 100 and state['epoch'] % 10 == 0):
-    #     file_name = 'checkpoint_%dep.pth' % state['epoch']
-    #     file_path = osp.join(checkpoint_path, file_name)
-    #     paddle.save(state, file_path)
 
 
 def main(args):
@@ -174,7 +162,6 @@ def main(args):
         num_workers=0,
         drop_last=True,
         use_shared_memory=True # 加速读取，确保/dev/shm/空间足
-        # pin_memory=True # paddle木有
     )
 
     # device
@@ -194,7 +181,7 @@ def main(args):
         if cfg.train_cfg.optimizer == 'SGD':
             optimizer = paddle.optimizer.Momentum(parameters=model.parameters(), learning_rate=cfg.train_cfg.lr,
                                              weight_decay=5e-4, momentum=0.99)
-            #optimizer = paddle.optimizer.SGD(parameters = model.parameters(), learning_rate=cfg.train_cfg.lr, weight_decay=5e-4)#,momentum=0.99)
+
         elif cfg.train_cfg.optimizer == 'Adam':
             optimizer = paddle.optimizer.Adam(parameters = model.parameters(), learning_rate=cfg.train_cfg.lr)
 
@@ -206,13 +193,6 @@ def main(args):
         checkpoint = paddle.load(cfg.train_cfg.pretrain)
         model.set_state_dict(checkpoint)
     if args.resume:
-        # assert osp.isfile(args.resume), 'Error: no checkpoint directory found!'
-        # print('Resuming from checkpoint %s.' % args.resume)
-        # checkpoint = paddle.load(args.resume)
-        # start_epoch = checkpoint['epoch']
-        # start_iter = checkpoint['iter']
-        # model.load_state_dict(checkpoint['state_dict'])
-        # optimizer.load_state_dict(checkpoint['optimizer'])
         cfg_name, _ = osp.splitext(osp.basename(args.config))
         checkpoint_path = osp.join('checkpoints', cfg_name)
         pdparams_file = checkpoint_path + "/" + args.resume + ".pdparams"
