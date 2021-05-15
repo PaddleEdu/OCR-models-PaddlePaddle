@@ -79,7 +79,7 @@ pytorch2paddle(net,
 
 提取码：4yy1
 
-AIStudio链接（敬请期待）
+[AIStudio链接](https://aistudio.baidu.com/aistudio/projectdetail/1927739?channel=0&channelType=0&shared=1)
 
 ```shell script
 cd /home/aistudio/CRAFT
